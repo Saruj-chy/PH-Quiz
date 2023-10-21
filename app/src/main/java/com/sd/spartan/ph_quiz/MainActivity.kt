@@ -10,37 +10,50 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.sd.spartan.ph_quiz.screenItem.ScreenItem
+import com.sd.spartan.ph_quiz.screens.HomeScreen
+import com.sd.spartan.ph_quiz.screens.QAScreen
+import com.sd.spartan.ph_quiz.screens.SecondScreen
+import com.sd.spartan.ph_quiz.screens.SplashScreen
 import com.sd.spartan.ph_quiz.ui.theme.PHQuizTheme
+import com.sd.spartan.ph_quiz.ui.theme.PrimaryColor
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PHQuizTheme {
-                // A surface container using the 'background' color from the theme
+                val systemUiController = rememberSystemUiController()
+                systemUiController.setStatusBarColor(PrimaryColor)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val navController = rememberNavController()
+                    NavHost(
+                        navController = navController,
+                        startDestination = ScreenItem.HomeScreenItem.route
+                    ) {
+                        composable(ScreenItem.HomeScreenItem.route) {
+                            HomeScreen(navController = navController)
+                        }
+                        composable(ScreenItem.QAScreen.route) {
+                            QAScreen(navController = navController)
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    PHQuizTheme {
-        Greeting("Android")
-    }
-}
+
+
+
+
+
